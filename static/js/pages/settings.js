@@ -67,6 +67,7 @@ Pages.settings = {
               <div class="toggle-row"><div><div class="t">Skip the ping check before connecting</div><div class="d">Turn on if ping (ICMP) is blocked on your network but the machine port works.</div></div>${switchHtml('device_ommit_ping', s.device_ommit_ping)}</div>
               <div class="toggle-row"><div><div class="t">Lock the machine while reading</div><div class="d">Disables the keypad / sensor for a few seconds while the log is read, so no punch is missed. Recommended.</div></div>${switchHtml('disable_device_during_fetch', s.disable_device_during_fetch)}</div>
               <div class="toggle-row"><div><div class="t">Correct the machine clock automatically</div><div class="d">When the drift exceeds the limit above, the machine clock is set to this PC's time during sync.</div></div>${switchHtml('auto_sync_device_time', s.auto_sync_device_time)}</div>
+              <div class="toggle-row"><div><div class="t">Allow clearing the machine log (clear_from_device_on_fetch)</div><div class="d">Off by default: punches are <b>never</b> deleted from the attendance machines. When on, a machine's log is cleared only if that machine also has <b>Clear machine log after sync (safe mode)</b> enabled and every punch is confirmed in ERPNext.</div></div>${switchHtml('clear_from_device_on_fetch', s.clear_from_device_on_fetch)}</div>
             </section>
 
             <section data-s="punches" class="form-section">
@@ -184,6 +185,9 @@ Pages.settings = {
     form.active_hours_enabled.addEventListener('change', syncActive); syncActive();
     const syncMail = () => $('#mail-box').classList.toggle('hidden', !form.email_enabled.checked);
     form.email_enabled.addEventListener('change', syncMail); syncMail();
+    form.clear_from_device_on_fetch.addEventListener('change', async () => {
+      if (form.clear_from_device_on_fetch.checked && !await confirmDialog({ title: 'Allow clearing machine logs?', message: 'Machines with "Clear machine log after sync (safe mode)" enabled will have their attendance log deleted once every punch is confirmed in ERPNext. Continue?', confirm: 'Allow', danger: true })) form.clear_from_device_on_fetch.checked = false;
+    });
 
     // backoff preview
     const backoff = () => {
@@ -263,6 +267,7 @@ Pages.settings = {
         device_port: n('device_port'), device_password: n('device_password'), device_timeout: n('device_timeout'), device_retries: n('device_retries'),
         device_retry_delay: n('device_retry_delay'), time_drift_alert_seconds: n('time_drift_alert_seconds'), device_force_udp: form.device_force_udp.checked,
         device_ommit_ping: form.device_ommit_ping.checked, disable_device_during_fetch: form.disable_device_during_fetch.checked, auto_sync_device_time: form.auto_sync_device_time.checked,
+        clear_from_device_on_fetch: form.clear_from_device_on_fetch.checked,
         default_punch_direction: form.default_punch_direction.value, import_start_date: form.import_start_date.value,
         punch_values_in: ints(form.punch_values_in.value), punch_values_out: ints(form.punch_values_out.value),
         repeat_punch_seconds: n('repeat_punch_seconds'), timestamp_offset_minutes: n('timestamp_offset_minutes'), ignore_future_minutes: n('ignore_future_minutes'),

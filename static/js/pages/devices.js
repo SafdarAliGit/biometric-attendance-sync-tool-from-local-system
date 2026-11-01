@@ -217,7 +217,7 @@ async function openDeviceEditor(device = null, prefill = {}) {
           <div class="field"><label>Longitude (optional)</label><input class="input" type="number" step="any" name="longitude" value="${esc(d.longitude ?? '')}" placeholder="e.g. 67.0011"><div class="hint">Needed only when <i>Allow Geolocation Tracking</i> is on in Frappe HR (v15+).</div></div>
         </div></div>
       <div class="form-section" style="padding:0;border:0"><h3>${icon('shield')} Machine log</h3>
-        <div class="toggle-row"><div><div class="t">Clear machine log after sync (safe mode)</div><div class="d">Frees memory on the machine. The log is cleared <b>only</b> when every punch read is stored on this PC <b>and</b> confirmed in ERPNext, and no new punch arrived meanwhile. Otherwise clearing waits for a later run.</div></div>${switchHtml('clear_after_sync', d.clear_after_sync)}</div>
+        <div class="toggle-row"><div><div class="t">Clear machine log after sync (safe mode)</div><div class="d">Frees memory on the machine. The log is cleared <b>only</b> when every punch read is stored on this PC <b>and</b> confirmed in ERPNext, and no new punch arrived meanwhile. Otherwise clearing waits for a later run.${s.clear_from_device_on_fetch ? '' : ' <b>Has no effect now:</b> clearing is disabled globally (Settings → Machine defaults → clear_from_device_on_fetch).'}</div></div>${switchHtml('clear_after_sync', d.clear_after_sync)}</div>
       </div>
       <div class="field"><label>Notes</label><textarea class="input" name="notes" rows="2">${esc(d.notes || '')}</textarea></div>
     </form>`,

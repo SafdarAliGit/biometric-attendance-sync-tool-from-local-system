@@ -24,6 +24,7 @@ def effective(device: dict, settings: dict) -> dict:
         "ommit_ping": bool(settings["device_ommit_ping"]),
         "punch_direction": direction,
         "import_start_date": device.get("import_start_date") or settings["import_start_date"] or "",
+        "clear_from_device_on_fetch": bool(settings.get("clear_from_device_on_fetch", False)),
     }
 
 
@@ -121,6 +122,10 @@ class Machine:
         self.conn.set_time(when or datetime.now())
 
     def clear_attendance(self):
+        # hard guard: never delete the machine log unless clear_from_device_on_fetch is on
+        if not self.cfg.get("clear_from_device_on_fetch"):
+            raise RuntimeError("Clearing the machine log is disabled "
+                               "(clear_from_device_on_fetch = False).")
         self.conn.clear_attendance()
 
 

@@ -139,7 +139,7 @@ Pages.help = {
       </section>
 
       <section id="h-clear">${h('clear')}
-        <p>Machines have limited memory. With <b>Clear machine log after sync (safe mode)</b> enabled on a machine, its log is deleted only when:</p>
+        <p>By default the app <b>never</b> deletes anything from the machines: <b>Settings → Machine defaults → Allow clearing the machine log (clear_from_device_on_fetch)</b> is off. Machines have limited memory; if you turn it on <b>and</b> enable <b>Clear machine log after sync (safe mode)</b> on a machine, its log is deleted only when:</p>
         <ol><li>every punch read is stored on this PC <b>and</b> confirmed in ERPNext (synced or skipped), and</li><li>no new punch arrived since it was read (the record count is checked again while the machine is locked).</li></ol>
         <p>Otherwise clearing is postponed to a later run. It is off by default. The local ledger keeps the punches.</p>
       </section>

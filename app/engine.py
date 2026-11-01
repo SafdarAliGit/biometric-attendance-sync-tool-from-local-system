@@ -236,7 +236,8 @@ class Engine:
             self._push(run, task, device, settings, erp)
             if run.cancel.is_set():
                 raise Cancelled()
-            if fetch_ok and device.get("clear_after_sync"):
+            if (fetch_ok and settings.get("clear_from_device_on_fetch")
+                    and device.get("clear_after_sync")):
                 self._safe_clear(run, task, device, settings, fetched_keys)
         except Cancelled:
             self._set(run, task, status="cancelled", message="Cancelled", force=True)

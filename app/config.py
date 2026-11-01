@@ -52,6 +52,9 @@ DEFAULT_SETTINGS = {
     "device_retry_delay": 10,
     "disable_device_during_fetch": True,
     "auto_sync_device_time": False,
+    # Same as clear_from_device_on_fetch in the original tool's local_config.py.template.
+    # False = the attendance log on the machines is never deleted (master switch).
+    "clear_from_device_on_fetch": False,
     "time_drift_alert_seconds": 120,
     # Punch rules
     "default_punch_direction": "AUTO",   # "AUTO" | "IN" | "OUT" | "NONE"
